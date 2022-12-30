@@ -34,11 +34,7 @@
   margin-right: 9px;
 }
 
-.userForm button {
+.updateButton{
   margin-bottom: 1rem;
   margin-left: 2rem;
-  background-color: rgb(235, 154, 154);
-  border: none;
-  border-radius: 5px;
-  padding: 3px 6px;
 }

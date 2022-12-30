@@ -1,8 +1,19 @@
 import classes from "./CompletePage.module.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import UpdateProfileForm from "../component/UpdateProfile/UpdateProfileForm";
+import Button from "../component/UI/Button";
+import { useContext } from "react";
+import AuthContext from "../store/AuthContext";
 
-import UpdateProfileForm from "../component/Layout/UpdateProfileForm";
+
+
 const CompletePage = () => {
+const authCtx=useContext(AuthContext);
+const history=useHistory();
+  const logoutHandler=()=>{
+    authCtx.LogOut();
+    history.replace("/")
+  }
   return (
     <div className={classes.completePage}>
       <header className={classes.header}>
@@ -16,6 +27,7 @@ const CompletePage = () => {
               Complete now
             </Link>
           </p>
+          <Button className={classes.logouButton} onClick={logoutHandler}>LogOut</Button>
         </nav>
       </header>
       <hr />

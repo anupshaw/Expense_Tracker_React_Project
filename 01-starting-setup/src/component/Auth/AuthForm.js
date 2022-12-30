@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import AuthContext from "../../store/AuthContext";
 import classes from "./AuthForm.module.css";
 
@@ -62,7 +62,8 @@ const AuthForm = () => {
 
           if (isLogin) {
             authCtx.LogIn(data.email, data.idToken);
-            history.replace("/welcome");
+            localStorage.setItem('Email',data.email);
+            history.replace("/verifyUserProfile");
           } else {
             console.log("sign up sucessfully");
             history.replace("/");
@@ -100,7 +101,7 @@ const AuthForm = () => {
         ></input>
         {isLogin && (
           <h6 className={classes.forgotPassword}>
-            <a href="#abc">Forgot password</a>
+            <Link to='/forgotPassword'>Forgot Password</Link>
           </h6>
         )}
         <button className={classes.formButton}>

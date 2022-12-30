@@ -1,8 +1,9 @@
 import classes from "./UpdateProfileForm.module.css";
 import { AiFillGithub } from "react-icons/ai";
 import { BsGlobe2 } from "react-icons/bs";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import AuthContext from "../../store/AuthContext";
+import Button from "../UI/Button";
 
 const UpdateProfileForm = (props) => {
   const authCtx = useContext(AuthContext);
@@ -10,10 +11,52 @@ const UpdateProfileForm = (props) => {
   const InputNameRef = useRef();
   const InputUrlRef = useRef();
 
+
+  useEffect(() => {
+    const email=localStorage.getItem('Email')
+    fetch(
+      "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyACWwhQRz6sD3dfeifgbz4FoSI4PjDO4BI",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          idToken: authCtx.token,
+        }),
+      }
+    )
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((data) => {
+        if (data.error && data.error.message) {
+          let errorMessage = data.error.message;
+          throw new Error(errorMessage);
+        } else {
+          console.log("updateProfileRetrieveData", data);
+          const userData = data.users.find(
+            (user) => user.email === email
+          );
+          if(userData){
+            console.log("updateUserProfileRetrieveData", userData);
+            InputNameRef.current.value=userData.displayName;
+            InputUrlRef.current.value=userData.photoUrl;
+          }
+          else{
+            InputNameRef.current.value="";
+            InputUrlRef.current.value="";;
+          }
+      
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  },[]);
+
   const submitHandler = async (event) => {
     event.preventDefault();
     const fullName = InputNameRef.current.value;
-    const photoUrl = InputNameRef.current.value;
+    const photoUrl = InputUrlRef.current.value;
+
     try {
       const resp = await fetch(
         "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyACWwhQRz6sD3dfeifgbz4FoSI4PjDO4BI",
@@ -45,7 +88,7 @@ const UpdateProfileForm = (props) => {
     <form className={`${classes.userForm}`} onSubmit={submitHandler}>
       <div className={classes.formHeader}>
         <h5>Contact Details</h5>
-        <button>Cancel</button>
+        <Button>Cancel</Button>
       </div>
       <div className={classes.userDetails}>
         <div className={classes.name}>
@@ -59,7 +102,7 @@ const UpdateProfileForm = (props) => {
           <input type="url" id="photoUrl" ref={InputUrlRef}></input>
         </div>
       </div>
-      <button>Update</button>
+      <Button className={classes.updateButton}>Update</Button>
       <hr />
     </form>
   );
