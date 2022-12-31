@@ -1,22 +1,49 @@
 import classes from "./ExpenseForm.module.css";
 import { TiTick } from "react-icons/ti";
 import { GrMoney } from "react-icons/gr";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { useHistory } from "react-router-dom";
+import ExpenseContext from "../../store/ExpenseContext";
 
 const ExpenseForm = (props) => {
-  const IntputEnterTextRef = useRef();
-  const IntputAmountTextRef = useRef();
-  const IntputCategoryTextRef = useRef();
+  const IntputExpenseTitleRef = useRef();
+  const IntputAmountRef = useRef();
+  const IntputCategoryRef = useRef();
+  let url='https://expensetracker-e406b-default-rtdb.firebaseio.com/expense.json';
+  const history=useHistory();
+  const expCtx=useContext(ExpenseContext)
   const submitHandler = async (event) => {
     event.preventDefault();
-    const enteredText=IntputEnterTextRef.current.value;
-    const enteredAmount=IntputAmountTextRef.current.value;
-    const selectedCategory=IntputCategoryTextRef.current.value;
-    props.onAddItem({
-        text:enteredText,
+    const enteredExpenseTitle=IntputExpenseTitleRef.current.value;
+    const enteredAmount=IntputAmountRef.current.value;
+    const selectedCategory=IntputCategoryRef.current.value;
+
+    const resp=await fetch(url,{
+      method:'POST',
+      body:JSON.stringify({
+        title:enteredExpenseTitle,
         amount:enteredAmount,
         category:selectedCategory
-    });
+      })
+    })
+
+    const data=await resp.json();
+
+    if(!resp.ok){
+      let errorMessage=data.error.message;
+      throw new Error(errorMessage);
+    }else{
+       history.push("/welcome/Expense");
+      console.log('expenseformdata',data);
+    }
+
+
+    expCtx.addExpenses({
+      title:enteredExpenseTitle,
+      amount:enteredAmount,
+      category:selectedCategory
+    })
+   
   };
   return (
     <div className={classes.expenseFormContainer}>
@@ -29,13 +56,13 @@ const ExpenseForm = (props) => {
           <input
             type="text"
             defaultValue="Enter Text"
-            ref={IntputEnterTextRef}
+            ref={IntputExpenseTitleRef}
           ></input>
           <div className={classes.amountButton}>
             <input
               type="number"
               defaultValue="Amount"
-              ref={IntputAmountTextRef}
+              ref={IntputAmountRef}
             ></input>
             <button className={classes.expenseAddButton}>
               <TiTick />
@@ -44,7 +71,7 @@ const ExpenseForm = (props) => {
         </div>
         <div className={classes.category}>
           <label for="category">Category:</label>
-          <select name="category" id="category" ref={IntputCategoryTextRef}>
+          <select name="category" id="category" ref={IntputCategoryRef}>
             <option value="food">Food</option>
             <option value="petrol">Petrol</option>
             <option value="salary">Salary</option>

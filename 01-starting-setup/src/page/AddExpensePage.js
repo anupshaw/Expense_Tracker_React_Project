@@ -5,7 +5,7 @@ const AddExpensePage=(props)=>{
 
 
     return <React.Fragment>
-        <ExpenseForm onAddItem={props.onAddItemHandler} />
+        <ExpenseForm />
     </React.Fragment>
 }
 

@@ -4,16 +4,18 @@ import { BsGlobe2 } from "react-icons/bs";
 import { useContext, useEffect, useRef } from "react";
 import AuthContext from "../../store/AuthContext";
 import Button from "../UI/Button";
+import { useHistory } from "react-router-dom";
 
 const UpdateProfileForm = (props) => {
   const authCtx = useContext(AuthContext);
 
   const InputNameRef = useRef();
   const InputUrlRef = useRef();
-
+  const history = useHistory();
 
   useEffect(() => {
-    const email=localStorage.getItem('Email')
+    console.log('useEffect Hi')
+    const email = localStorage.getItem("Email");
     fetch(
       "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyACWwhQRz6sD3dfeifgbz4FoSI4PjDO4BI",
       {
@@ -32,25 +34,25 @@ const UpdateProfileForm = (props) => {
           throw new Error(errorMessage);
         } else {
           console.log("updateProfileRetrieveData", data);
-          const userData = data.users.find(
-            (user) => user.email === email
-          );
-          if(userData){
+          const userData = data.users.find((user) => user.email === email);
+          if (userData) {
             console.log("updateUserProfileRetrieveData", userData);
-            InputNameRef.current.value=userData.displayName;
-            InputUrlRef.current.value=userData.photoUrl;
+            InputNameRef.current.value = userData.displayName;
+            InputUrlRef.current.value = userData.photoUrl;
+          } else {
+            InputNameRef.current.value = "";
+            InputUrlRef.current.value = "";
           }
-          else{
-            InputNameRef.current.value="";
-            InputUrlRef.current.value="";;
-          }
-      
         }
       })
       .catch((error) => {
         console.log(error.message);
       });
   },[]);
+
+  const onClickHandler = () => {
+    history.replace("/welcome");
+  };
 
   const submitHandler = async (event) => {
     event.preventDefault();
@@ -88,7 +90,10 @@ const UpdateProfileForm = (props) => {
     <form className={`${classes.userForm}`} onSubmit={submitHandler}>
       <div className={classes.formHeader}>
         <h5>Contact Details</h5>
-        <Button>Cancel</Button>
+        <Button type="button" onClick={onClickHandler}>
+          {" "}
+          Cancel
+        </Button>
       </div>
       <div className={classes.userDetails}>
         <div className={classes.name}>
@@ -102,7 +107,9 @@ const UpdateProfileForm = (props) => {
           <input type="url" id="photoUrl" ref={InputUrlRef}></input>
         </div>
       </div>
-      <Button className={classes.updateButton}>Update</Button>
+      <Button className={classes.updateButton} type="submit">
+        Update
+      </Button>
       <hr />
     </form>
   );

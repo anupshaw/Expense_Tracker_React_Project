@@ -3,9 +3,9 @@
     flex-direction: row;
     justify-content: space-between;
     width: 60rem;
-    background-color: aqua;
+    background-color: blueviolet;
     margin-bottom: 1rem;
     align-items: center;
     padding-left: 2rem;
-    padding-right: 2rem;
+    padding-right: 2rem
 }

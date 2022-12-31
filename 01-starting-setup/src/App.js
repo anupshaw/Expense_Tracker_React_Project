@@ -1,7 +1,7 @@
 import AuthForm from "./component/Auth/AuthForm";
 
 import { Route, Switch, useHistory } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 import AuthContext from "./store/AuthContext";
 import Welcome from "./page/WelcomePage";
 import CompletePage from "./page/CompletePage";
@@ -9,20 +9,33 @@ import VerifyUserProfile from "./component/VerifyUserProfile/VerifyUserProfile";
 import ForgotPassword from "./component/forgotPassword/ForgotPassword";
 import AddExpensePage from "./page/AddExpensePage";
 import ExpensePage from "./page/ExpensePage";
+import ExpenseContext from "./store/ExpenseContext";
 
 function App() {
-  const [items, setItems] = useState([]);
-  const history = useHistory();
+  const expCtx = useContext(ExpenseContext);
 
-  console.log("items", items);
+  let url =
+    "https://expensetracker-e406b-default-rtdb.firebaseio.com/expense.json";
+  useEffect(() => {
+    fetch(url)
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((data) => {
+        if (data.error && data.error.message) {
+          throw new Error(data.error.message);
+        } else {
+          for (let key in data) {
+            expCtx.addExpenses({
+              title: data[key].title,
+              amount: data[key].amount,
+              category: data[key].category,
+            });
+          }
+        }
+      });
+  }, []);
 
-  const addItemHandler = (expenseItem) => {
-    history.push("/welcome/Expense");
-
-    setItems((prevState) => {
-      return [expenseItem, ...prevState];
-    });
-  };
   const authCtx = useContext(AuthContext);
   return (
     <div>
@@ -43,10 +56,10 @@ function App() {
           <ForgotPassword />
         </Route>
         <Route path="/welcome/AddExpense" exact>
-          <AddExpensePage onAddItemHandler={addItemHandler} />
+          <AddExpensePage />
         </Route>
         <Route path="/welcome/Expense">
-          <ExpensePage items={items} />
+          <ExpensePage />
         </Route>
       </Switch>
     </div>

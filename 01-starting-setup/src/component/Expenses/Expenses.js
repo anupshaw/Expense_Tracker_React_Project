@@ -1,33 +1,36 @@
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import ExpenseContext from "../../store/ExpenseContext";
+import Button from "../UI/Button";
 import ExpenseItem from "./ExpenseItem";
 import classes from "./Expenses.module.css";
 const Expenses = (props) => {
-//   const items = [
-//     {
-//       text: "Abc",
-//       amount: "10",
-//       category: "food",
-//     },
-//     {
-//       text: "Abc",
-//       amount: "10",
-//       category: "food",
-//     },
-//   ];
-
-console.log('Expenseitems',props.items)
+  const history=useHistory();
+const expCtx=useContext(ExpenseContext);
+const clickHandler=()=>{
+  history.replace("/welcome")
+}
+console.log('expCtx',expCtx);
   return (
     <div className={classes.expensesContainer}>
+      <header className={classes.expenseHeader}>
+        <nav>
+          <Button className={classes.expenseHomebtn}  onClick={clickHandler}>Home</Button>
+        </nav>
+      </header>
         <h1>Expenses</h1>
       <div className={classes.expenses}>
-        {props.items.map((item) => {
+        <div className={classes.expenseItemContainer}>
+        {expCtx.expenses.map((item) => {
           return (
             <ExpenseItem
-              text={item.text}
+              text={item.title}
               amount={item.amount}
               category={item.category}
             />
           );
         })}
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ const ExpensePage=(props)=>{
 
 
     return <React.Fragment>
-       <Expenses items={props.items} />
+       <Expenses  />
     </React.Fragment>
 }
 
