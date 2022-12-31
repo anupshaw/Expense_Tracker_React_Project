@@ -1,6 +1,6 @@
 import AuthForm from "./component/Auth/AuthForm";
 
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import AuthContext from "./store/AuthContext";
 import Welcome from "./page/WelcomePage";
@@ -27,6 +27,7 @@ function App() {
         } else {
           for (let key in data) {
             expCtx.addExpenses({
+              id:key,
               title: data[key].title,
               amount: data[key].amount,
               category: data[key].category,
