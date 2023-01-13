@@ -1,15 +1,30 @@
-.authFormContainer{
+.authContainer{
+    height: 50vh;
+    width: 40rem;
+ display: flex;
+ flex-direction: row;
+    background-color: aqua;
+}
+
+
+.left img{
+    height: 50vh;
+    width: 20rem;
+    /* position: ; */
+}
+
+.right{
     display: flex;
+    height: 50vh;
     flex-direction: column;
     width: 20rem;
     margin: auto;
     position: relative;
-    top:15rem;
+    /* top:15rem; */
     background-color: white;
     padding: 10px 5px;
     align-items: center;
     justify-content: center;
-    border-radius: 1rem;
 }
 
 .form{

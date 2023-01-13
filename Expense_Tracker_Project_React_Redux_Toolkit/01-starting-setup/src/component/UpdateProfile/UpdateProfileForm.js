@@ -4,13 +4,13 @@ import { BsGlobe2 } from "react-icons/bs";
 import {  useEffect, useRef } from "react";
 import Button from "../UI/Button";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const UpdateProfileForm = (props) => {
-const token=useSelector((state)=>state.auth.token)
+const token=localStorage.getItem('token');
   const InputNameRef = useRef();
   const InputUrlRef = useRef();
   const history = useHistory();
+  console.log('token',token)
 
   useEffect(() => {
     console.log('useEffect Hi')
@@ -45,7 +45,7 @@ const token=useSelector((state)=>state.auth.token)
         }
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log('error',error.message);
       });
   },[]);
 
@@ -79,6 +79,7 @@ const token=useSelector((state)=>state.auth.token)
         throw new Error(errorMessage);
       } else {
         console.log("updateProfileData", data);
+        alert('Your Profile has been updated successfully')
       }
     } catch (error) {
       alert(error.message);

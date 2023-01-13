@@ -3,6 +3,7 @@ import Button from "../component/UI/Button";
 import classes from "./WelcomePage.module.css";
 import { authAction } from "../store/auth";
 import { useDispatch } from "react-redux";
+import ExpensePic from '../assests/Expense.jpg'
 
 
 
@@ -15,6 +16,7 @@ const Welcome = () => {
   };
 
   return (
+    <>
     <header className={classes.header}>
       <nav className={classes.nav}>
         <h1>WELCOME!!!</h1>
@@ -42,6 +44,9 @@ const Welcome = () => {
         <Button  className={classes.logoutButton} onClick={logoutHandler}>LogOut</Button>
       </nav>
     </header>
+    <img src={ExpensePic} alt='expense welcome page' className={classes.welcomePic}></img>
+    </>
+
   );
 };
 

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { themeAction } from "../../store/theme";
 import Toggle from "react-styled-toggle";
 import { useEffect } from "react";
+import DownloadFile from "../UI/DownloadFileButton";
 const Expenses = (props) => {
   const expense = useSelector((state) => state.expense.expenses);
   const theme = useSelector((state) => state.theme.theme);
@@ -19,7 +20,7 @@ const Expenses = (props) => {
   //   }
   // }, []);
   const exepenseTotalAmount = useSelector(
-    (state) => state.expense.totalExpense
+    (state) => state.expense.totalExpenseAmount
   );
 
   const history = useHistory();
@@ -49,6 +50,12 @@ const Expenses = (props) => {
           >
             Activate Premium
           </Button>
+          <DownloadFile
+            className={classes.expenseHomebtn}
+            disabled={exepenseTotalAmount <= 10000 ? "disabled" : ""}
+          >
+            Download
+          </DownloadFile>
         </div>
         <div className={classes.toggleBtn}>
           <Toggle onChange={toggleHandler} />

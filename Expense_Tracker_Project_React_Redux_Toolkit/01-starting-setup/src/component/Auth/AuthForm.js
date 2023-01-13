@@ -3,9 +3,10 @@ import { Link, useHistory } from "react-router-dom";
 import classes from "./AuthForm.module.css";
 import { useDispatch } from "react-redux";
 import { authAction } from "../../store/auth";
+import logo from '../../assests/loginPage.jpg'
 
 const AuthForm = () => {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [isLogin, setIsLogin] = useState(true);
   const InputEmailRef = useRef("");
   const InputPasswordRef = useRef("");
@@ -60,17 +61,18 @@ const AuthForm = () => {
           }
           throw new Error(errorMessage);
         } else {
-          console.log('databefore',data);
-          console.log('authAction',authAction);
-
+          console.log("databefore", data);
+          console.log("authAction", authAction);
 
           if (isLogin) {
-            dispatch(authAction.login({
-              token:data.idToken,
-              email:data.email
-            }))
+            dispatch(
+              authAction.login({
+                token: data.idToken,
+                email: data.email,
+              })
+            );
             // authCtx.LogIn(data.email, data.idToken);
-            localStorage.setItem('Email',data.email);
+            localStorage.setItem("Email", data.email);
             history.replace("/verifyUserProfile");
           } else {
             console.log("sign up sucessfully");
@@ -86,39 +88,44 @@ const AuthForm = () => {
     }
   };
   return (
-    <div className={classes.authFormContainer}>
-      <form className={classes.form} onSubmit={submitHandler} autoComplete>
-        <h1 className={classes.header}>{isLogin ? "Sign in" : "Sign Up"}</h1>
-        <input
-          type="text"
-          placeholder="Email"
-          className={classes.email}
-          ref={InputEmailRef}
-        ></input>
-        <input
-          type="password"
-          placeholder="Password"
-          className={classes.password}
-          ref={InputPasswordRef}
-        ></input>
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          className={classes.confirmpassword}
-          ref={InputConfirmPasswordRef}
-        ></input>
-        {isLogin && (
-          <h6 className={classes.forgotPassword}>
-            <Link to='/forgotPassword'>Forgot Password</Link>
-          </h6>
-        )}
-        <button className={classes.formButton}>
-          {isLogin ? "Sign in" : "Sign Up"}
+    <div className={classes.authContainer}>
+      <div className={classes.left}>
+        <img src={logo} alt="login" width='30%' height='100%'></img>
+      </div>
+      <div className={classes.right}>
+        <form className={classes.form} onSubmit={submitHandler} autoComplete>
+          <h1 className={classes.header}>{isLogin ? "Sign in" : "Sign Up"}</h1>
+          <input
+            type="text"
+            placeholder="Email"
+            className={classes.email}
+            ref={InputEmailRef}
+          ></input>
+          <input
+            type="password"
+            placeholder="Password"
+            className={classes.password}
+            ref={InputPasswordRef}
+          ></input>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className={classes.confirmpassword}
+            ref={InputConfirmPasswordRef}
+          ></input>
+          {isLogin && (
+            <h6 className={classes.forgotPassword}>
+              <Link to="/forgotPassword">Forgot Password</Link>
+            </h6>
+          )}
+          <button className={classes.formButton}>
+            {isLogin ? "Sign in" : "Sign Up"}
+          </button>
+        </form>
+        <button className={classes.loginButton} onClick={toggleAccountHandler}>
+          {isLogin ? `Don't have account?Sign up` : "Have an account? Login"}
         </button>
-      </form>
-      <button className={classes.loginButton} onClick={toggleAccountHandler}>
-        {isLogin ? `Don't have account?Sign up` : "Have an account? Login"}
-      </button>
+      </div>
     </div>
   );
 };

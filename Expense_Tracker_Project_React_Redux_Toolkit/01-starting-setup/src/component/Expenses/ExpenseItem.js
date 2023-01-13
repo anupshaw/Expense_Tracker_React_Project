@@ -11,7 +11,7 @@ const ExpenseItem = (props) => {
   const history = useHistory();
 
   const editHandler = async () => {
-    history.replace(`/welcome/AddExpense?id=${props.id}`);
+    history.push(`/welcome/AddExpense?id=${props.id}`);
   };
 
   const deleteHandler = async () => {

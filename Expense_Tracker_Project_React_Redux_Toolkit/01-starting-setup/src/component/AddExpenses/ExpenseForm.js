@@ -20,8 +20,7 @@ const ExpenseForm = (props) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const paramId = queryParams.get("id");
-  console.log("paramId", paramId);
-  ////////////////////////////
+
 
   useEffect(() => {
     if (paramId && expense.length > 0) {

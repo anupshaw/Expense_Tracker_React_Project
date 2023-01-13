@@ -1,4 +1,4 @@
-import AuthForm from "./component/Auth/AuthForm";
+// import AuthForm from "./component/Auth/AuthForm";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch } from "react-router-dom";
 import {useEffect } from "react";
@@ -9,6 +9,7 @@ import ForgotPassword from "./component/forgotPassword/ForgotPassword";
 import AddExpensePage from "./page/AddExpensePage";
 import ExpensePage from "./page/ExpensePage";
 import { expenseAction } from "./store/Expense";
+import AuthPage from "./page/AuthPage";
 
 function App() {
   const isAuth=useSelector((state)=>state.auth.isAuthenticated)
@@ -43,7 +44,7 @@ function App() {
     <div>
       <Switch>
         <Route path="/" exact>
-          <AuthForm />
+        <AuthPage />
         </Route>
         <Route exact path="/welcome">
           {isAuth && <Welcome />}
